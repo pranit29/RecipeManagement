@@ -1,0 +1,94 @@
+﻿
+@using RecipeOnlineIngredientSystem.Models;
+@model IEnumerable<Recipe>
+
+
+<div style="background-color: lightblue; width: 100%; height: 100%; position: absolute; top: 53px; left: 2px;">
+
+    @{ ViewData["Title"] = "Index"; }
+    <br />
+    <br />
+
+    <div class="row" style="background-color: lightblue;">
+        <div class="col-6" style="background-color: lightblue;">
+            <h2 class="text-info" style="text-align: right; padding-right: 0%;">Recipe List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-action="Create" class="btn btn-info" style="margin-right:35%"><i class="fas fa-plus"></i>&nbsp; Add New Recipe</a>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-info" style="margin-right:20%"><i class="fas fa-plus"></i>&nbsp; Product</a>
+        </div>
+        
+
+
+
+
+    </div>
+   
+    <br />
+    <div>
+        <table class="table table-striped border" id="myTable" style="width:70%; margin-left:15%">
+            <thead>
+                <tr class="table-info">
+                    <th>
+                        @Html.DisplayNameFor(c => c.RecipeName)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+           
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.RecipeName</td>
+                        <td>
+                            <a class="btn btn-primary " asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+
+                    </tr>
+                }
+                @*<div style="position:fixed;right:50px; top:100px;" class="text-white">
+                    <input type="button" style="background-color: #17a2b8;"  onclick="location.href = '/Product/Index';" value="Product Section" /><i class="fas fa-plus"></i><br><br>
+
+                </div>*@
+            </tbody>
+
+
+        </table>
+    </div>
+
+    @section scripts{
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready( function () {
+            $('#myTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'pageLength','copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        } );
+        $(function(){
+            var save = '@TempData["save"]'
+            if(save!='') {
+                alertify.success(save);
+            }
+            var edit = '@TempData["edit"]'
+            if(edit!='') {
+                alertify.success(edit);
+            }
+            var del = '@TempData["delete"]'
+            if (del!='') {
+                alertify.error(del);
+            }
+        })
+        </script>
+    }
+</div>
+
+
+

@@ -1,0 +1,150 @@
+﻿@*@model IEnumerable<RecipeOnlineIngredientSystem.Models.ProductDetails>
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Recipe)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recipe.RecipeName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@
+
+
+@using RecipeOnlineIngredientSystem.Models;
+@model IEnumerable<ProductDetail>
+
+
+<div style="background-color: lightblue; width: 100%; height: 100%; position: absolute; top: 53px; left: 2px;">
+
+    @{ ViewData["Title"] = "Index"; }
+    <br />
+    <br />
+
+    <div class="row" style="background-color: lightblue;">
+        <div class="col-6" style="background-color: lightblue;">
+            <h2 class="text-info" style="text-align: right; padding-right: 0%;">Product List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="Customer" asp-action="Cart" class="btn btn-info" style="margin-right:20%"><i class="fas fa-plus"></i>&nbsp;Cart</a>
+        </div>
+
+
+    </div>
+
+    <br />
+    <div>
+        <table class="table table-striped border" id="myTable" style="width:70%; margin-left:15%">
+            <thead>
+                <tr class="table-info">
+                    <th>
+                        @Html.DisplayNameFor(c => c.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(c => c.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(c => c.Recipe.RecipeName)
+                    </th>
+
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.Recipe.RecipeName</td>
+
+                        <td>
+                            @*<partial name="_ButtonPartial" model="@item.Id" />*@
+                        <td>
+
+                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+
+    @section scripts{
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready( function () {
+            $('#myTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'pageLength','copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        } );
+        $(function(){
+            var save = '@TempData["save"]'
+            if(save!='') {
+                alertify.success(save);
+            }
+            var edit = '@TempData["edit"]'
+            if(edit!='') {
+                alertify.success(edit);
+            }
+            var del = '@TempData["delete"]'
+            if (del!='') {
+                alertify.error(del);
+            }
+        })
+        </script>
+    }
+</div>
+

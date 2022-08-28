@@ -1,0 +1,87 @@
+﻿@model RecipeOnlineIngredientSystem.Models.ProductDetail
+@{ ViewData["Title"] = "Detail"; }
+@using RecipeOnlineIngredientSystem.Data
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{ List<ProductDetail>
+    products = HttpContextAccessor.HttpContext.Session.Get<List<ProductDetail>>("products");
+    ProductDetail product = null;
+    if (products != null)
+    {
+        product = products.FirstOrDefault(c => c.Id == Model.Id);
+    } }
+<br />
+
+<h2 class="text-info">Product Details</h2>
+<form asp-action="Detail" method="post" enctype="multipart/form-data">
+    <div class="p-4 rounded border row">
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+        </div>
+        <div class="col-8">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Name"></label>
+                </div>
+                <div class="col-8">
+                    <input type="hidden" asp-for="Id" />
+                    <input asp-for="Name" readonly="readonly" class="form-control" />
+                </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Price"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Price" readonly="readonly" class="form-control" />
+                </div>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Recipe"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Recipe.RecipeName" readonly="readonly" class="form-control" />
+                </div>
+                <span asp-validation-for="Recipe" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+
+                </div>
+            <div class="col-8">
+                @if (product != null)
+                {
+                <button type="submit" class="btn btn-danger form-control" asp-action="Remove" asp-route-id="@Model.Id">Remove to Cart</button> }
+                else
+                {
+                <a  asp-controller="Customer" asp-action="Cart">
+                    <input type="submit" class="btn btn-info form-control" value="Add to Cart" />
+                </a>
+
+                }
+                </div>
+
+            </div>
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-success">Back to List</a>
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-3">
+            <img src="@Url.Content(@Model.Image)" width=150 height=150 style="border-radius: 5px;border: 1px solid #efefef" />
+
+        </div>
+
+    </div>
+</form>
+<img src="~/Images/cart.jpg" height="920" width="1690" alt="Error" style="position: absolute; top: -5px; left: 0px; z-index: -1;" />
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
